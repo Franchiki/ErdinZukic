@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ErdinZukic | Sealed Pokémon TCG Store</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff;
+    --bg-soft:#f4f7fc;
+    --bg-soft-2:#eaf1fc;
+    --panel:#ffffff;
+    --ink:#0f1a33;
+    --ink-dim:#5b6579;
+    --ink-faint:#93a0b8;
+    --line:#e5eaf3;
+    --line-strong:#cddaf0;
+    --blue:#1d4ed8;
+    --blue-bright:#2f6fed;
+    --blue-deep:#123a91;
+    --blue-sky:#60a5fa;
+    --blue-navy:#0b2159;
+    --amber:#f2a71b;
+    --ok:#16a34a;
+    --ok-bg:#ecfdf3;
+    --red:#e0383f;
+    --radius-lg:20px;
+    --radius-md:14px;
+    --shadow-card:0 18px 34px -20px rgba(15,26,51,0.18);
+    --shadow-blue:0 16px 32px -14px rgba(29,78,216,0.35);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#ffffff; --bg-soft:#f4f7fc; --ink:#0f1a33; }
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{font-family:'Baloo 2',sans-serif;margin:0;}
+  a{color:inherit;text-decoration:none;}
+  img,svg{max-width:100%;display:block;}
+  ::selection{background:var(--blue-sky);color:#06122b;}
+  button{font-family:inherit;cursor:pointer;}
+  .wrap{max-width:1280px;margin:0 auto;padding:0 28px;}
+  @media (max-width:640px){.wrap{padding:0 18px;}}
+
+  /* ---------------- Header ---------------- */
+  header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);transition:box-shadow .25s ease;}
+  header.scrolled{box-shadow:0 8px 24px -16px rgba(15,26,51,0.25);}
+  .util-bar{background:var(--blue-navy);}
+  .util-bar-inner{display:flex;align-items:center;gap:22px;height:36px;font-size:12.5px;font-weight:600;color:#cfe0ff;}
+  .util-bar-inner a{display:flex;align-items:center;gap:6px;color:#cfe0ff;transition:color .15s;}
+  .util-bar-inner a:hover{color:#fff;}
+  .util-bar-inner svg{width:12.5px;height:12.5px;flex:none;}
+  .util-note{margin-left:auto;display:flex;align-items:center;gap:6px;color:#8fe3ad;}
+  .util-note svg{width:12px;height:12px;}
+  @media (max-width:640px){.util-note{display:none;} .util-bar-inner{gap:16px;}}
+
+  .nav{display:flex;align-items:center;justify-content:space-between;height:74px;gap:18px;}
+  .brand{display:flex;align-items:center;gap:11px;}
+  .brand-mark{width:40px;height:40px;border-radius:11px;background:linear-gradient(150deg,var(--blue-sky),var(--blue) 55%,var(--blue-deep));display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-blue);flex:none;}
+  .brand-mark svg{width:21px;height:21px;}
+  .brand-text{line-height:1.1;}
+  .brand-text .t1{font-family:'Baloo 2',sans-serif;font-weight:700;font-size:18px;color:var(--ink);}
+  .brand-text .t2{font-size:11px;color:var(--ink-faint);font-weight:600;letter-spacing:.02em;}
+  nav.links{display:flex;gap:26px;align-items:center;}
+  nav.links a{font-size:14px;color:var(--ink-dim);font-weight:700;transition:color .15s;position:relative;padding-bottom:3px;}
+  nav.links a::after{content:'';position:absolute;left:0;right:100%;bottom:0;height:2px;background:var(--blue);border-radius:2px;transition:right .2s ease;}
+  nav.links a:hover::after{right:0;}
+  nav.links a:hover{color:var(--blue);}
+  .nav-right{display:flex;align-items:center;gap:12px;}
+  .search-box{display:flex;align-items:center;gap:8px;background:var(--bg-soft);border:1px solid var(--line);border-radius:999px;padding:8px 14px;width:210px;transition:border-color .15s;}
+  .search-box:focus-within{border-color:var(--blue);}
+  .search-box input{background:none;border:none;outline:none;color:var(--ink);font-size:13.5px;width:100%;font-family:'Inter',sans-serif;}
+  .search-box svg{width:15px;height:15px;flex:none;color:var(--ink-faint);}
+  .icon-btn{position:relative;width:42px;height:42px;border-radius:12px;background:var(--bg-soft);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink);transition:.15s;flex:none;}
+  .icon-btn:hover{border-color:var(--blue);}
+  .icon-btn svg{width:19px;height:19px;}
+  .cart-badge{position:absolute;top:-6px;right:-6px;min-width:19px;height:19px;padding:0 4px;background:var(--red);border-radius:999px;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;color:#fff;border:2px solid var(--bg);}
+  .cart-badge.bump{animation:badgeBump .35s ease;}
+  @keyframes badgeBump{0%{transform:scale(1);}45%{transform:scale(1.35);}100%{transform:scale(1);}}
+  .icon-btn.bump{animation:iconBump .35s ease;}
+  @keyframes iconBump{0%{transform:scale(1);}45%{transform:scale(1.08);}100%{transform:scale(1);}}
+  .menu-btn{display:none;}
+  @media (max-width:940px){nav.links{display:none;} .search-box{display:none;} .menu-btn{display:flex;}}
+
+  .mnav{position:fixed;inset:110px 0 0 0;background:#fff;z-index:49;transform:translate3d(0,-8px,0);opacity:0;pointer-events:none;transition:transform .15s ease, opacity .15s ease;will-change:transform,opacity;border-top:1px solid var(--line);padding:22px;display:flex;flex-direction:column;gap:4px;}
+  .mnav.open{transform:translate3d(0,0,0);opacity:1;pointer-events:auto;}
+  .mnav a{padding:14px 6px;font-size:16px;font-weight:700;border-bottom:1px solid var(--line);color:var(--ink);}
+  .mnav .search-box{display:flex;width:100%;margin-top:10px;}
+
+  /* ---------------- Hero ---------------- */
+  .hero{position:relative;padding:76px 0 64px;overflow:hidden;}
+  .hero::before{content:'';position:absolute;top:-160px;right:-160px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(47,111,237,0.16),transparent 65%);z-index:-1;}
+  .hero::after{content:'';position:absolute;bottom:-200px;left:-140px;width:460px;height:460px;border-radius:50%;background:radial-gradient(circle,rgba(96,165,250,0.14),transparent 65%);z-index:-1;}
+  .hero-grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:44px;align-items:center;}
+  @media (max-width:900px){.hero-grid{grid-template-columns:1fr;}}
+  .eyebrow-pill{display:inline-flex;align-items:center;gap:8px;background:var(--ok-bg);border:1px solid #bdeccb;color:#0f7a3d;font-size:12.5px;font-weight:700;padding:7px 14px;border-radius:999px;margin-bottom:20px;}
+  .eyebrow-pill .dot{width:6px;height:6px;border-radius:50%;background:var(--ok);}
+  .hero h1{font-size:clamp(34px,4.6vw,54px);line-height:1.08;font-weight:700;color:var(--ink);}
+  .hero h1 span{color:var(--blue);}
+  .hero p.lede{margin-top:20px;color:var(--ink-dim);font-size:16.5px;line-height:1.65;max-width:480px;}
+  .hero-cta{display:flex;gap:14px;margin-top:30px;flex-wrap:wrap;}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:15px 26px;border-radius:12px;font-weight:700;font-size:14.5px;border:1px solid transparent;transition:transform .15s, box-shadow .15s, opacity .15s, background .15s;white-space:nowrap;}
+  .btn:active{transform:scale(0.97);}
+  .btn-primary{background:linear-gradient(120deg,var(--blue-bright),var(--blue));color:#fff;box-shadow:var(--shadow-blue);transition:transform .15s, box-shadow .15s;}
+  .btn-primary:hover{box-shadow:0 20px 38px -14px rgba(29,78,216,0.5);transform:translateY(-2px);}
+  .btn-outline{background:#fff;border:1.5px solid var(--line-strong);color:var(--ink);}
+  .btn-outline:hover{border-color:var(--blue);color:var(--blue);}
+  .btn-block{width:100%;}
+  .btn-sm{padding:9px 14px;font-size:13px;border-radius:9px;}
+  .btn[disabled]{opacity:.45;pointer-events:none;}
+
+  .trust-row{display:flex;gap:26px;margin-top:38px;flex-wrap:wrap;}
+  .trust-row .item{display:flex;align-items:center;gap:9px;color:var(--ink-dim);font-size:13.5px;font-weight:600;}
+  .trust-row svg{width:17px;height:17px;color:var(--blue);flex:none;}
+
+  .hero-art{position:relative;height:400px;}
+  .hcard{position:absolute;width:190px;background:#fff;border-radius:18px;box-shadow:var(--shadow-card);border:1px solid var(--line);overflow:hidden;}
+  .hcard .face{height:150px;display:flex;align-items:center;justify-content:center;color:#fff;text-align:center;padding:10px;}
+  .hcard .tag{padding:10px 12px;font-size:12px;font-weight:700;color:var(--ink);}
+  .h1c{top:0;left:28px;transform:rotate(-7deg);z-index:2;animation:floatCard 5.5s ease-in-out infinite;}
+  .h1c .face{background:linear-gradient(150deg,var(--blue-sky),var(--blue));}
+  .h2c{top:70px;right:0;transform:rotate(6deg);z-index:1;width:170px;animation:floatCard 6.5s ease-in-out infinite .4s;}
+  .h2c .face{background:linear-gradient(150deg,var(--blue),var(--blue-deep));}
+  .h3c{bottom:0;left:70px;transform:rotate(-3deg);z-index:3;width:180px;animation:floatCard 6s ease-in-out infinite .9s;}
+  .h3c .face{background:linear-gradient(150deg,#8fc6ff,var(--blue-sky));}
+  @keyframes floatCard{0%,100%{translate:0 0;}50%{translate:0 -10px;}}
+  @media (max-width:900px){.hero-art{height:300px;margin-top:6px;} .hcard{width:150px;} .hcard .face{height:118px;}}
+
+  /* ---------------- Sections ---------------- */
+  .section{padding:64px 0;}
+  .section-soft{background:var(--bg-soft);}
+  .sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:30px;flex-wrap:wrap;}
+  .sec-head h2{font-size:clamp(24px,3vw,32px);font-weight:700;color:var(--ink);}
+  .sec-head p{color:var(--ink-dim);font-size:14.5px;margin-top:6px;max-width:520px;}
+
+  /* Featured / New arrivals strip */
+  .feat-strip{display:flex;gap:18px;overflow-x:auto;padding-bottom:10px;scrollbar-width:thin;}
+  .feat-strip::-webkit-scrollbar{height:6px;}
+  .feat-strip::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:99px;}
+  .feat-card{flex:0 0 230px;background:#fff;border:1px solid var(--line);border-radius:var(--radius-md);padding:14px;box-shadow:var(--shadow-card);}
+  .feat-card .art{height:130px;border-radius:10px;margin-bottom:12px;}
+
+  /* Toolbar / tabs */
+  .toolbar{display:flex;align-items:center;gap:12px;margin-bottom:26px;flex-wrap:wrap;padding:10px;background:#fff;border:1px solid var(--line);border-radius:14px;}
+  .tab-group{display:flex;gap:6px;background:var(--bg-soft);padding:4px;border-radius:10px;flex-wrap:wrap;}
+  .tab-btn{padding:9px 15px;border-radius:8px;border:none;background:transparent;color:var(--ink-dim);font-weight:700;font-size:12.8px;transition:.15s;white-space:nowrap;}
+  .tab-btn.active{background:var(--blue);color:#fff;}
+  .toolbar .search-box{flex:1;min-width:180px;width:auto;}
+  .result-count{color:var(--ink-faint);font-size:12.5px;font-weight:600;white-space:nowrap;}
+
+  /* ---------------- Product grid / cards ---------------- */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;}
+  .p-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;display:flex;flex-direction:column;transition:transform .25s cubic-bezier(.2,.7,.2,1), box-shadow .25s ease, border-color .25s ease;box-shadow:var(--shadow-card);}
+  .p-card:hover{border-color:var(--blue-sky);transform:translateY(-5px);box-shadow:0 26px 44px -22px rgba(29,78,216,0.28);}
+  .p-card:hover .box-visual{transform:scale(1.05);}
+  .p-art{position:relative;height:200px;display:flex;align-items:center;justify-content:center;background:var(--bg-soft);}
+  .box-visual{position:relative;width:150px;height:176px;transition:transform .3s cubic-bezier(.2,.7,.2,1);}
+  .box-visual .spine{position:absolute;left:-9px;top:8px;bottom:8px;width:16px;border-radius:5px 0 0 5px;filter:brightness(.82);}
+  .box-visual .face{position:absolute;inset:0;border-radius:12px;box-shadow:0 22px 30px -16px rgba(15,26,51,0.28), inset 0 0 0 1px rgba(255,255,255,0.25);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;text-align:center;color:#fff;}
+  .box-visual .setname{font-family:'Baloo 2',sans-serif;font-weight:700;font-size:14px;line-height:1.25;}
+  .box-visual .kind{margin-top:10px;font-size:9.5px;letter-spacing:.06em;background:rgba(255,255,255,0.22);padding:4px 10px;border-radius:999px;font-weight:800;text-transform:uppercase;}
+  .stock-badge{position:absolute;top:12px;left:12px;z-index:2;background:var(--ok-bg);border:1px solid #bdeccb;color:#0f7a3d;font-size:10px;font-weight:800;letter-spacing:.03em;padding:5px 10px;border-radius:999px;display:flex;align-items:center;gap:5px;}
+  .stock-badge svg{width:9px;height:9px;}
+  .new-badge{position:absolute;top:12px;right:12px;z-index:2;background:var(--amber);color:#3a2400;font-size:10px;font-weight:800;letter-spacing:.03em;padding:5px 10px;border-radius:999px;animation:newPulse 2.4s ease-in-out infinite;}
+  @keyframes newPulse{0%,100%{box-shadow:0 0 0 0 rgba(242,167,27,0.5);}50%{box-shadow:0 0 0 5px rgba(242,167,27,0);}}
+  .p-body{padding:16px 16px 18px;display:flex;flex-direction:column;gap:9px;flex:1;}
+  .p-set{font-size:11px;color:var(--blue);font-weight:800;letter-spacing:.03em;text-transform:uppercase;}
+  .p-name{font-weight:700;font-size:15px;color:var(--ink);line-height:1.3;}
+  .p-price-row{margin-top:2px;}
+  .p-price{font-family:'Baloo 2',sans-serif;font-weight:700;font-size:20px;color:var(--ink);}
+  .p-price-each{display:block;font-size:11px;color:var(--ink-faint);font-weight:600;margin-top:2px;}
+  .mode-toggle{display:flex;background:var(--bg-soft);border-radius:8px;padding:3px;gap:3px;}
+  .mode-toggle button{flex:1;padding:7px 0;border:none;background:transparent;color:var(--ink-dim);font-size:11.5px;font-weight:700;border-radius:6px;transition:.15s;}
+  .mode-toggle button.active{background:#fff;color:var(--blue);box-shadow:0 2px 6px rgba(15,26,51,0.1);}
+  .qty-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;}
+  .stepper{display:flex;align-items:center;border:1px solid var(--line);border-radius:9px;overflow:hidden;}
+  .stepper button{width:30px;height:32px;background:var(--bg-soft);color:var(--ink);border:none;font-size:15px;font-weight:700;}
+  .stepper button:hover{background:var(--bg-soft-2);}
+  .stepper .qv{width:32px;text-align:center;font-size:13.5px;font-weight:700;}
+  .p-actions{display:flex;gap:8px;}
+  .add-btn{flex:1;background:linear-gradient(120deg,var(--blue-bright),var(--blue));color:#fff;border:none;border-radius:9px;padding:11px 0;font-weight:800;font-size:12.5px;display:flex;align-items:center;justify-content:center;gap:6px;transition:transform .15s, box-shadow .15s, filter .15s;}
+  .add-btn:hover{filter:brightness(1.06);transform:translateY(-1px);box-shadow:0 10px 20px -10px rgba(29,78,216,0.5);}
+  .add-btn.added{background:linear-gradient(120deg,#22c55e,#16a34a);}
+  .contact-btn{width:36px;height:36px;border-radius:9px;border:1px solid var(--line);background:var(--bg-soft);display:flex;align-items:center;justify-content:center;flex:none;color:#16a34a;}
+  .contact-btn:hover{border-color:#16a34a;}
+  .contact-btn svg{width:16px;height:16px;}
+  .empty-state{padding:56px 20px;text-align:center;color:var(--ink-faint);background:#fff;border:1px dashed var(--line-strong);border-radius:var(--radius-md);}
+  .empty-state svg{width:36px;height:36px;margin:0 auto 12px;opacity:.5;}
+  .empty-state strong{display:block;color:var(--ink-dim);font-size:14px;margin-bottom:4px;}
+
+  /* ---------------- One Piece secondary section ---------------- */
+  .op-band{background:linear-gradient(160deg,#fff6f2,#fff);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .op-band .p-art{background:#fdf1ee;}
+  .op-band .box-visual .face{background:linear-gradient(150deg,#f4726b,#c0272a);}
+  .op-band .p-set{color:var(--red);}
+  .op-band .add-btn{background:linear-gradient(120deg,#e24a48,#c0272a);}
+  .op-band .mode-toggle button.active{color:#c0272a;}
+  .op-band .tab-btn.active{background:#c0272a;}
+
+  /* ---------------- Contact ---------------- */
+  .contact-panel{display:grid;grid-template-columns:1.1fr 0.9fr;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-card);}
+  @media (max-width:800px){.contact-panel{grid-template-columns:1fr;}}
+  .contact-left{background:#fff;padding:44px;}
+  .contact-left h2{font-size:27px;margin-bottom:12px;}
+  .contact-left p{color:var(--ink-dim);font-size:14.5px;line-height:1.7;max-width:440px;}
+  .contact-list{margin-top:26px;display:flex;flex-direction:column;gap:16px;}
+  .contact-list .row{display:flex;align-items:center;gap:14px;}
+  .contact-list .ic{width:42px;height:42px;border-radius:11px;background:var(--bg-soft);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex:none;color:var(--blue);}
+  .contact-list .ic svg{width:19px;height:19px;}
+  .contact-list .lbl{font-size:11.5px;color:var(--ink-faint);font-weight:700;letter-spacing:.02em;}
+  .contact-list .val{font-size:14.5px;font-weight:700;color:var(--ink);}
+  .contact-right{background:linear-gradient(160deg,var(--blue-deep),var(--blue-navy));padding:44px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:16px;}
+  .contact-right h3{font-size:20px;color:#fff;}
+  .contact-right p{color:rgba(255,255,255,0.78);font-size:13.5px;line-height:1.6;max-width:320px;}
+  .wa-btn{background:#25D366;color:#08260f;border:none;border-radius:12px;padding:16px 26px;font-weight:800;font-size:15px;display:inline-flex;align-items:center;gap:10px;box-shadow:0 16px 32px -14px rgba(37,211,102,0.5);}
+  .wa-btn svg{width:20px;height:20px;}
+  .contact-topics{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;}
+  .contact-topics span{background:rgba(255,255,255,0.14);color:#fff;font-size:11.5px;font-weight:600;padding:6px 11px;border-radius:999px;}
+
+  /* ---------------- Footer ---------------- */
+  footer{border-top:1px solid var(--line);padding:50px 0 28px;background:var(--bg-soft);}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;}
+  @media (max-width:720px){.foot-grid{grid-template-columns:1fr;gap:28px;}}
+  .foot-grid h4{font-size:12.5px;color:var(--ink-faint);letter-spacing:.04em;margin-bottom:15px;font-family:'Inter',sans-serif;font-weight:800;}
+  .foot-grid a{display:block;color:var(--ink-dim);font-size:13.5px;margin-bottom:10px;font-weight:600;}
+  .foot-grid a:hover{color:var(--blue);}
+  .foot-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:42px;padding-top:20px;border-top:1px solid var(--line);color:var(--ink-faint);font-size:12.5px;flex-wrap:wrap;gap:10px;}
+
+  /* ---------------- Cart drawer ---------------- */
+  .overlay{position:fixed;inset:0;background:rgba(15,26,51,0.35);z-index:70;opacity:0;pointer-events:none;transition:.2s;}
+  .overlay.open{opacity:1;pointer-events:auto;}
+  .drawer{position:fixed;top:0;right:0;bottom:0;width:410px;max-width:92vw;background:#fff;z-index:71;border-left:1px solid var(--line);box-shadow:-30px 0 60px rgba(15,26,51,0.18);transform:translateX(100%);transition:.25s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;}
+  .drawer.open{transform:translateX(0);}
+  .drawer-head{padding:22px 22px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;}
+  .drawer-head h3{font-size:19px;}
+  .drawer-close{width:34px;height:34px;border-radius:9px;background:var(--bg-soft);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink);}
+  .drawer-items{flex:1;overflow-y:auto;padding:16px 22px;display:flex;flex-direction:column;gap:14px;}
+  .c-item{display:flex;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--line);}
+  .c-thumb{width:52px;height:64px;border-radius:8px;flex:none;background:linear-gradient(150deg,var(--blue-sky),var(--blue));border:1px solid var(--line);display:flex;align-items:center;justify-content:center;}
+  .c-thumb svg{width:20px;height:20px;color:#fff;}
+  .c-info{flex:1;min-width:0;}
+  .c-info .nm{font-size:13.5px;font-weight:700;color:var(--ink);}
+  .c-info .md{font-size:11px;color:var(--ink-faint);margin-top:2px;}
+  .c-info .bottom-row{display:flex;align-items:center;justify-content:space-between;margin-top:8px;}
+  .c-price{font-weight:700;color:var(--blue);font-size:13.5px;font-family:'Baloo 2',sans-serif;}
+  .c-remove{color:var(--ink-faint);font-size:11.5px;font-weight:700;}
+  .c-remove:hover{color:var(--red);}
+  .drawer-foot{padding:20px 22px 26px;border-top:1px solid var(--line);}
+  .sum-row{display:flex;justify-content:space-between;font-size:13.5px;color:var(--ink-dim);margin-bottom:8px;}
+  .sum-row.total{font-size:17px;color:var(--ink);font-weight:800;margin-top:10px;padding-top:12px;border-top:1px dashed var(--line);}
+  .sum-row.total .v{font-family:'Baloo 2',sans-serif;color:var(--blue);}
+  .cart-empty{padding:60px 20px;text-align:center;color:var(--ink-faint);}
+  .cart-empty svg{width:44px;height:44px;margin:0 auto 14px;opacity:.4;}
+
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);z-index:80;background:var(--ink);color:#fff;padding:12px 20px;border-radius:11px;font-size:13.5px;font-weight:700;opacity:0;transition:.25s;pointer-events:none;box-shadow:0 20px 40px -16px rgba(15,26,51,.4);display:flex;align-items:center;gap:8px;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  .toast svg{width:16px;height:16px;color:#4ade80;}
+
+  .fab-wa{position:fixed;right:22px;bottom:22px;z-index:60;width:56px;height:56px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;color:#08260f;box-shadow:0 16px 34px -12px rgba(37,211,102,0.6), 0 0 0 1px rgba(255,255,255,0.4);transition:transform .15s ease;}
+  .fab-wa:hover{transform:scale(1.07);}
+  .fab-wa svg{width:27px;height:27px;}
+  @media (max-width:640px){.fab-wa{right:16px;bottom:16px;width:52px;height:52px;}}
+
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.2,.7,.2,1);}
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  .hero-copy > *{opacity:0;transform:translateY(18px);animation:heroIn .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .hero-copy > *:nth-child(1){animation-delay:.05s;}
+  .hero-copy > *:nth-child(2){animation-delay:.15s;}
+  .hero-copy > *:nth-child(3){animation-delay:.25s;}
+  .hero-copy > *:nth-child(4){animation-delay:.35s;}
+  .hero-copy > *:nth-child(5){animation-delay:.45s;}
+  @keyframes heroIn{to{opacity:1;transform:translateY(0);}}
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;animation:none !important;}
+    .reveal{opacity:1 !important;transform:none !important;}
+    .hero-copy > *{opacity:1 !important;transform:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="util-bar">
+    <div class="wrap util-bar-inner">
+      <a href="mailto:erdinzukic0@gmail.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6l9 6 9-6M4 5h16a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V6a1 1 0 011-1z"/></svg>erdinzukic0@gmail.com</a>
+      <a href="https://wa.me/16318029071" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3.5A11 11 0 003.7 17.4L2 22l4.7-1.6A11 11 0 1020.5 3.5z"/></svg>WhatsApp: +1 631-802-9071</a>
+      <span class="util-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>All items sealed &amp; ready to ship</span>
+    </div>
+  </div>
+  <div class="wrap nav">
+    <div class="brand">
+      <div class="brand-mark"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="#fff" stroke-width="1.8"/><path d="M3.5 12h17" stroke="#fff" stroke-width="1.8"/><circle cx="12" cy="12" r="2.6" fill="#fff"/></svg></div>
+      <div class="brand-text"><div class="t1">ErdinZukic</div><div class="t2">Sealed Pokémon &amp; TCG</div></div>
+    </div>
+    <nav class="links">
+      <a href="#home">Home</a>
+      <a href="#new">New Arrivals</a>
+      <a href="#pokemon">Sealed Pokémon</a>
+      <a href="#onepiece">One Piece</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="nav-right">
+      <div class="search-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input id="searchTop" type="text" placeholder="Search products…"></div>
+      <button class="icon-btn" id="cartBtn" aria-label="Open cart">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h2l2.4 12.4a2 2 0 002 1.6h8.4a2 2 0 002-1.6L21 7H6"/><circle cx="9" cy="21" r="1.4" fill="currentColor" stroke="none"/><circle cx="18" cy="21" r="1.4" fill="currentColor" stroke="none"/></svg>
+        <span class="cart-badge" id="cartCount" style="display:none;">0</span>
+      </button>
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<div class="mnav" id="mnav">
+  <a href="#home">Home</a>
+  <a href="#new">New Arrivals</a>
+  <a href="#pokemon">Sealed Pokémon</a>
+  <a href="#onepiece">One Piece</a>
+  <a href="#contact">Contact</a>
+  <div class="search-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input id="searchMobile" type="text" placeholder="Search products…"></div>
+</div>
+
+<main>
+  <section class="hero" id="home">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow-pill"><span class="dot"></span> All items sealed &amp; ready to ship</div>
+        <h1>Your trusted source for<br><span>sealed Pokémon TCG</span></h1>
+        <p class="lede">ErdinZukic is a collector-run shop specializing in sealed Pokémon TCG — Booster Boxes, ETBs and collector sets — plus sealed One Piece Card Game boxes and cases.</p>
+        <div class="hero-cta">
+          <a href="#pokemon" class="btn btn-primary">Shop Now</a>
+          <a href="#new" class="btn btn-outline">View New Arrivals</a>
+        </div>
+        <div class="trust-row">
+          <div class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Sealed &amp; verified stock</div>
+          <div class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Clear pricing, no surprises</div>
+          <div class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Direct WhatsApp support</div>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="hcard h1c"><div class="face"><span style="font-family:'Baloo 2';font-weight:700;">ETB</span></div><div class="tag">Elite Trainer Box</div></div>
+        <div class="hcard h2c"><div class="face"><span style="font-family:'Baloo 2';font-weight:700;">Booster<br>Box</span></div><div class="tag">Sealed Case</div></div>
+        <div class="hcard h3c"><div class="face"><span style="font-family:'Baloo 2';font-weight:700;">Collector<br>Set</span></div><div class="tag">Ready to ship</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="new">
+    <div class="wrap">
+      <div class="sec-head reveal"><div><h2>New &amp; Best-Selling</h2><p>The newest sets and strongest sellers, sealed and ready to ship first.</p></div></div>
+      <div class="feat-strip reveal" id="featStrip"></div>
+    </div>
+  </section>
+
+  <section class="section section-soft" id="pokemon">
+    <div class="wrap">
+      <div class="sec-head reveal"><div><h2>Sealed Pokémon Products</h2><p>Browse by product type — Booster Boxes, ETBs, Collector Sets, Booster Packs, Singles and Cases.</p></div></div>
+      <div class="toolbar">
+        <div class="tab-group" id="pkFilter">
+          <button class="tab-btn active" data-f="all">All</button>
+          <button class="tab-btn" data-f="boosterbox">Booster Boxes</button>
+          <button class="tab-btn" data-f="etb">ETBs</button>
+          <button class="tab-btn" data-f="collector">Collector Sets</button>
+          <button class="tab-btn" data-f="pack">Booster Packs</button>
+          <button class="tab-btn" data-f="single">Singles</button>
+          <button class="tab-btn" data-f="case">Cases</button>
+        </div>
+        <div class="search-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input id="searchPK" placeholder="Search Pokémon products…"></div>
+        <span class="result-count" id="pkCount"></span>
+      </div>
+      <div class="grid reveal" id="pkGrid"></div>
+    </div>
+  </section>
+
+  <section class="section op-band" id="onepiece">
+    <div class="wrap">
+      <div class="sec-head reveal"><div><h2>Also Sealed: One Piece TCG</h2><p>Boxes and full cases across every set, OP-01 through OP-17 plus Extra Boosters.</p></div></div>
+      <div class="toolbar">
+        <div class="tab-group" id="opFilter">
+          <button class="tab-btn active" data-f="all">All Sets</button>
+          <button class="tab-btn" data-f="eb">Extra Boosters</button>
+        </div>
+        <div class="search-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input id="searchOP" placeholder="Search One Piece sets…"></div>
+        <span class="result-count" id="opCount"></span>
+      </div>
+      <div class="grid reveal" id="opGrid"></div>
+    </div>
+  </section>
+
+  <section class="section" id="contact">
+    <div class="wrap">
+      <div class="contact-panel reveal">
+        <div class="contact-left">
+          <h2>Order &amp; get in touch</h2>
+          <p>Reach out for product availability, order requests, bulk purchases, or shipping questions — a real person replies on the other end.</p>
+          <div class="contact-list">
+            <div class="row">
+              <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6l9 6 9-6M4 5h16a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V6a1 1 0 011-1z"/></svg></div>
+              <div><div class="lbl">EMAIL</div><a class="val" href="mailto:erdinzukic0@gmail.com">erdinzukic0@gmail.com</a></div>
+            </div>
+            <div class="row">
+              <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.5 3.5A11 11 0 003.7 17.4L2 22l4.7-1.6A11 11 0 1020.5 3.5z"/></svg></div>
+              <div><div class="lbl">WHATSAPP</div><a class="val" href="https://wa.me/16318029071" target="_blank" rel="noopener">Message Erdin Zukic</a></div>
+            </div>
+          </div>
+          <div class="contact-topics"><span>Product availability</span><span>Orders</span><span>Bulk purchases</span><span>Shipping questions</span></div>
+        </div>
+        <div class="contact-right">
+          <h3>Fastest way to reach us</h3>
+          <p>Tap below to open WhatsApp directly — ask about stock, place an order, or get help with your cart.</p>
+          <a class="wa-btn" href="https://wa.me/16318029071" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3.5A11 11 0 003.7 17.4L2 22l4.7-1.6A11 11 0 1020.5 3.5zm-8.5 16.8a9.2 9.2 0 01-4.7-1.3l-.34-.2-3 1 1-2.9-.22-.36A9.25 9.25 0 1120.25 12 9.2 9.2 0 0112 20.3zm5-6.9c-.27-.14-1.6-.8-1.85-.9s-.43-.14-.6.13-.68.9-.84 1.08-.31.2-.58.07a7.6 7.6 0 01-2.23-1.38 8.4 8.4 0 01-1.55-1.93c-.16-.28 0-.42.12-.56.13-.13.28-.33.42-.5a1.9 1.9 0 00.28-.47.52.52 0 000-.5c-.07-.13-.6-1.46-.83-2s-.44-.46-.6-.47h-.5a1 1 0 00-.73.34 3 3 0 00-.94 2.24 5.4 5.4 0 001.12 2.83A12.3 12.3 0 0011.9 16.9a6.3 6.3 0 002.28.9 2.6 2.6 0 001.8-.27 2.2 2.2 0 001.44-1.02 1.7 1.7 0 00.12-1c-.06-.1-.24-.16-.5-.3z"/></svg>
+            Message Us on WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="brand" style="margin-bottom:14px;">
+          <div class="brand-mark"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="#fff" stroke-width="1.8"/><path d="M3.5 12h17" stroke="#fff" stroke-width="1.8"/><circle cx="12" cy="12" r="2.6" fill="#fff"/></svg></div>
+          <div class="brand-text"><div class="t1">ErdinZukic</div><div class="t2">Sealed Pokémon &amp; TCG</div></div>
+        </div>
+        <p style="color:var(--ink-dim);font-size:13.5px;max-width:320px;line-height:1.6;">Sealed TCG products, ready to ship. Pokémon TCG &amp; One Piece Card Game, boxes and full cases.</p>
+      </div>
+      <div>
+        <h4>NAVIGATE</h4>
+        <a href="#home">Home</a>
+        <a href="#new">New Arrivals</a>
+        <a href="#pokemon">Sealed Pokémon</a>
+        <a href="#onepiece">One Piece</a>
+        <a href="#" id="footCartLink">Shopping Cart</a>
+      </div>
+      <div>
+        <h4>CONTACT</h4>
+        <a href="mailto:erdinzukic0@gmail.com">erdinzukic0@gmail.com</a>
+        <a href="https://wa.me/16318029071" target="_blank" rel="noopener">Message Erdin Zukic</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> ErdinZukic. All items sealed &amp; ready to ship.</span>
+      <span>Sealed &amp; verified · Boxes &amp; cases · WhatsApp support</span>
+    </div>
+  </div>
+</footer>
+
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer">
+  <div class="drawer-head"><h3>Your Cart</h3><button class="drawer-close" id="drawerClose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="drawer-items" id="drawerItems"></div>
+  <div class="drawer-foot" id="drawerFoot"></div>
+</aside>
+
+<a class="fab-wa" href="https://wa.me/16318029071" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3.5A11 11 0 003.7 17.4L2 22l4.7-1.6A11 11 0 1020.5 3.5zm-8.5 16.8a9.2 9.2 0 01-4.7-1.3l-.34-.2-3 1 1-2.9-.22-.36A9.25 9.25 0 1120.25 12 9.2 9.2 0 0112 20.3zm5-6.9c-.27-.14-1.6-.8-1.85-.9s-.43-.14-.6.13-.68.9-.84 1.08-.31.2-.58.07a7.6 7.6 0 01-2.23-1.38 8.4 8.4 0 01-1.55-1.93c-.16-.28 0-.42.12-.56.13-.13.28-.33.42-.5a1.9 1.9 0 00.28-.47.52.52 0 000-.5c-.07-.13-.6-1.46-.83-2s-.44-.46-.6-.47h-.5a1 1 0 00-.73.34 3 3 0 00-.94 2.24 5.4 5.4 0 001.12 2.83A12.3 12.3 0 0011.9 16.9a6.3 6.3 0 002.28.9 2.6 2.6 0 001.8-.27 2.2 2.2 0 001.44-1.02 1.7 1.7 0 00.12-1c-.06-.1-.24-.16-.5-.3z"/></svg>
+</a>
+
+<div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span id="toastMsg"></span></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------------- Data ---------------- */
+  // cat: boosterbox | etb | collector | pack | single | case (pack/single/case intentionally empty until real inventory is confirmed)
+  var POKEMON = [
+    {name:"Destined Rivals Booster Box", set:"Destined Rivals", cat:"boosterbox", price:200, isNew:true},
+    {name:"Destined Rivals ETB", set:"Destined Rivals", cat:"etb", price:80},
+    {name:"Prismatic ETB", set:"Prismatic Evolutions", cat:"etb", price:70},
+    {name:"Prismatic PC ETB", set:"Prismatic Evolutions", cat:"etb", price:100, isNew:true},
+    {name:"Pokémon Prismatic 8-Pack Mini Tins", set:"Prismatic Evolutions", cat:"collector", price:110},
+    {name:"Prismatic Double Bundle", set:"Prismatic Evolutions", cat:"collector", price:100},
+    {name:"Blooming Waters", set:"Blooming Waters", cat:"collector", price:100},
+    {name:"151 ETB Regular", set:"Pokémon 151", cat:"etb", price:120},
+    {name:"151 PC ETB", set:"Pokémon 151", cat:"etb", price:230},
+    {name:"151 UPC", set:"Pokémon 151", cat:"collector", price:210},
+    {name:"Journey Together Booster Box", set:"Journey Together", cat:"boosterbox", price:200, isNew:true},
+    {name:"Phantasmal Flames Booster Box", set:"Phantasmal Flames", cat:"boosterbox", price:170},
+    {name:"Phantasmal ETB", set:"Phantasmal Flames", cat:"etb", price:70},
+    {name:"PRB02", set:"PRB02", cat:"collector", price:180},
+    {name:"Stellar Crown Pokémon Center ETB", set:"Stellar Crown", cat:"etb", price:100},
+    {name:"Black Bolt", set:"Black Bolt", cat:"boosterbox", price:50, isNew:true},
+    {name:"White Flare", set:"White Flare", cat:"boosterbox", price:50, isNew:true},
+    {name:"Pokémon Mega Evolution ETB", set:"Mega Evolution", cat:"etb", price:60, isNew:true},
+    {name:"Pokémon Mega Evolution Enhanced Booster Box", set:"Mega Evolution", cat:"boosterbox", price:210, isNew:true},
+    {name:"Charizard UPC", set:"Charizard Ultra-Premium Collection", cat:"collector", price:110},
+    {name:"Crown Zenith", set:"Crown Zenith", cat:"boosterbox", price:110},
+    {name:"151 ETB", set:"Pokémon 151", cat:"etb", price:150},
+    {name:"Surging Sparks", set:"Surging Sparks", cat:"boosterbox", price:200},
+    {name:"Perfect Order", set:"Perfect Order", cat:"boosterbox", price:110},
+    {name:"Ascended Heroes", set:"Ascended Heroes", cat:"boosterbox", price:110},
+    {name:"Chaos Rising", set:"Chaos Rising", cat:"boosterbox", price:110},
+    {name:"Mega Evolution", set:"Mega Evolution", cat:"boosterbox", price:110, isNew:true},
+    {name:"Pitch Black ETBs", set:"Mega Evolution", cat:"etb", price:65, isNew:true},
+    {name:"Mega Evolution Pitch Black", set:"Mega Evolution", cat:"boosterbox", price:110, isNew:true},
+    {name:"30th Anniversary Celebration Collector", set:"30th Anniversary Celebration", cat:"collector", price:200, isNew:true}
+  ];
+
+  var CAT_LABEL = {boosterbox:"Booster Box", etb:"ETB", collector:"Collector Set", pack:"Booster Pack", single:"Single", "case":"Case"};
+
+  var ONE_PIECE = [
+    {sku:"OP-17", note:"", box:290, kase:2000},
+    {sku:"OP-16", note:"", box:200, kase:1800},
+    {sku:"OP-15", note:"", box:150, kase:1000},
+    {sku:"OP-14", note:"", box:180, kase:1140},
+    {sku:"OP-13", note:"", box:250, kase:2000},
+    {sku:"OP-12", note:"", box:220, kase:2000},
+    {sku:"OP-11", note:"", box:220, kase:2000},
+    {sku:"OP-10", note:"", box:250, kase:2220},
+    {sku:"OP-09", note:"", box:150, kase:1000},
+    {sku:"OP-08", note:"", box:150, kase:1200},
+    {sku:"OP-07", note:"", box:230, kase:2000},
+    {sku:"OP-06", note:"", box:290, kase:2500},
+    {sku:"OP-05", note:"", box:200, kase:1500},
+    {sku:"OP-04", note:"", box:250, kase:1800},
+    {sku:"OP-03", note:"", box:350, kase:2300},
+    {sku:"OP-02", note:"", box:240, kase:1700},
+    {sku:"OP-01", note:"Blue and White available", box:200, kase:1500},
+    {sku:"EB-01", note:"Extra Booster", box:200, kase:1500, eb:true},
+    {sku:"EB-02", note:"Extra Booster", box:200, kase:1500, eb:true}
+  ];
+
+  function money(n){ return "$" + n.toLocaleString("en-US"); }
+  function id(prefix,name){ return (prefix+"-"+name).toLowerCase().replace(/[^a-z0-9]+/g,"-"); }
+
+  /* ---------------- State ---------------- */
+  var CART = {};
+  var opMode = {}, opQty = {}, pkQty = {};
+  var pkActiveFilter = "all", opActiveFilter = "all";
+
+  function loadCart(){ try{ var raw = localStorage.getItem("erdinzukic_cart"); if(raw){ CART = JSON.parse(raw); } }catch(e){ CART = {}; } }
+  function saveCart(){ try{ localStorage.setItem("erdinzukic_cart", JSON.stringify(CART)); }catch(e){} }
+
+  var SEALED_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>';
+  var CART_GLYPH = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v16H4z" opacity="0"/><rect x="4" y="7" width="16" height="13" rx="2"/><path d="M8 7V5a4 4 0 018 0v2"/></svg>';
+
+  function boxGradient(cat){
+    if(cat === "etb") return "linear-gradient(150deg,var(--blue-sky),var(--blue))";
+    if(cat === "collector") return "linear-gradient(150deg,var(--blue),var(--blue-navy))";
+    return "linear-gradient(150deg,var(--blue-bright),var(--blue-deep))";
+  }
+
+  /* ---------------- Render: Featured / New Arrivals ---------------- */
+  function renderFeatured(){
+    var picks = POKEMON.filter(function(p){ return p.isNew; }).slice(0,8);
+    var strip = document.getElementById("featStrip");
+    strip.innerHTML = picks.map(function(p){
+      return (
+        '<div class="feat-card">' +
+          '<div class="p-art art" style="border-radius:10px;">' +
+            '<div class="new-badge" style="top:8px;right:8px;">NEW</div>' +
+            '<div class="box-visual" style="width:100px;height:120px;">' +
+              '<div class="spine" style="background:'+boxGradient(p.cat)+'"></div>' +
+              '<div class="face" style="background:'+boxGradient(p.cat)+';padding:10px;">' +
+                '<span class="setname" style="font-size:11px;">'+p.set+'</span>' +
+                '<span class="kind" style="font-size:8px;">'+CAT_LABEL[p.cat]+'</span>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="p-set">'+p.set+'</div>' +
+          '<div class="p-name">'+p.name+'</div>' +
+          '<div class="p-price" style="margin-top:4px;">'+money(p.price)+'</div>' +
+        '</div>'
+      );
+    }).join("");
+  }
+
+  /* ---------------- Render: Pokemon ---------------- */
+  function renderPK(){
+    var q = (document.getElementById("searchPK").value || "").toLowerCase();
+    var grid = document.getElementById("pkGrid");
+    var items = POKEMON.filter(function(p){
+      if(pkActiveFilter !== "all" && p.cat !== pkActiveFilter) return false;
+      var hay = (p.name + " " + p.set).toLowerCase();
+      return hay.indexOf(q) !== -1;
+    });
+    document.getElementById("pkCount").textContent = items.length + " item" + (items.length===1?"":"s");
+
+    if(!items.length){
+      var emptyMsgs = {
+        pack: "Booster Packs aren't listed individually yet — message us on WhatsApp for loose pack availability.",
+        single: "Singles aren't listed yet — reach out on WhatsApp if you're after specific cards.",
+        "case": "Full Pokémon cases aren't listed yet — WhatsApp us for case-quantity pricing."
+      };
+      grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><strong>No products here yet</strong>'+(emptyMsgs[pkActiveFilter] || "No Pokémon products match your search.")+'</div>';
+      return;
+    }
+
+    grid.innerHTML = items.map(function(p){
+      var key = id("pk", p.name);
+      var qty = pkQty[p.name] || 1;
+      var total = p.price * qty;
+      return (
+        '<div class="p-card" data-key="'+key+'">' +
+          '<div class="p-art">' +
+            '<div class="stock-badge">'+SEALED_ICON+' IN STOCK</div>' +
+            (p.isNew ? '<div class="new-badge">NEW</div>' : '') +
+            '<div class="box-visual">' +
+              '<div class="spine" style="background:'+boxGradient(p.cat)+'"></div>' +
+              '<div class="face" style="background:'+boxGradient(p.cat)+';">' +
+                '<span class="setname">'+p.set+'</span>' +
+                '<span class="kind">'+CAT_LABEL[p.cat]+'</span>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="p-body">' +
+            '<div class="p-set">'+p.set+'</div>' +
+            '<div class="p-name">'+p.name+'</div>' +
+            '<div class="p-price-row"><span class="p-price">'+money(total)+'</span>'+(qty>1 ? '<span class="p-price-each">'+money(p.price)+' × '+qty+'</span>' : '<span class="p-price-each">each · sealed</span>')+'</div>' +
+            '<div class="qty-row">' +
+              '<div class="stepper"><button data-step="-1">−</button><span class="qv">'+qty+'</span><button data-step="1">+</button></div>' +
+              '<div class="p-actions">' +
+                '<button class="add-btn" data-add="1">Add to Cart</button>' +
+                '<a class="contact-btn" title="Ask on WhatsApp" target="_blank" rel="noopener" href="https://wa.me/16318029071?text='+encodeURIComponent("Hi! I'm interested in "+p.name+" ("+p.set+").")+'"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3.5A11 11 0 003.7 17.4L2 22l4.7-1.6A11 11 0 1020.5 3.5z"/></svg></a>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>'
+      );
+    }).join("");
+
+    Array.prototype.forEach.call(grid.querySelectorAll(".p-card"), function(card){
+      var key = card.getAttribute("data-key");
+      var product = items.filter(function(p){ return id("pk",p.name) === key; })[0];
+      if(!product) return;
+      Array.prototype.forEach.call(card.querySelectorAll("[data-step]"), function(btn){
+        btn.addEventListener("click", function(){
+          var d = parseInt(btn.getAttribute("data-step"),10);
+          var cur = pkQty[product.name] || 1;
+          pkQty[product.name] = Math.max(1, cur + d);
+          renderPK();
+        });
+      });
+      card.querySelector("[data-add]").addEventListener("click", function(e){
+        var btn = e.currentTarget;
+        var qty = pkQty[product.name] || 1;
+        var cartKey = "pk-"+product.name;
+        if(!CART[cartKey]){ CART[cartKey] = {key:cartKey, label:product.name, meta:product.set, price:product.price, qty:0, cat:"Pokémon"}; }
+        CART[cartKey].qty += qty;
+        saveCart(); updateCartUI();
+        flashAdded(btn);
+        showToast(product.name + " added to cart");
+      });
+    });
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll("#pkFilter .tab-btn"), function(btn){
+    btn.addEventListener("click", function(){
+      Array.prototype.forEach.call(document.querySelectorAll("#pkFilter .tab-btn"), function(b){ b.classList.remove("active"); });
+      btn.classList.add("active");
+      pkActiveFilter = btn.getAttribute("data-f");
+      renderPK();
+    });
+  });
+
+  /* ---------------- Render: One Piece ---------------- */
+  function renderOP(){
+    var q = (document.getElementById("searchOP").value || "").toLowerCase();
+    var grid = document.getElementById("opGrid");
+    var items = ONE_PIECE.filter(function(p){
+      if(opActiveFilter === "eb" && !p.eb) return false;
+      var hay = (p.sku + " " + p.note).toLowerCase();
+      return hay.indexOf(q) !== -1;
+    });
+    document.getElementById("opCount").textContent = items.length + " set" + (items.length===1?"":"s");
+    if(!items.length){
+      grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><strong>No sets found</strong>No One Piece sets match your search.</div>';
+      return;
+    }
+    grid.innerHTML = items.map(function(p){
+      var key = id("op", p.sku);
+      var mode = opMode[p.sku] || "box";
+      var qty = opQty[p.sku] || 1;
+      var price = mode === "box" ? p.box : p.kase;
+      var total = price * qty;
+      return (
+        '<div class="p-card" data-key="'+key+'">' +
+          '<div class="p-art">' +
+            '<div class="stock-badge">'+SEALED_ICON+' IN STOCK</div>' +
+            '<div class="box-visual">' +
+              '<div class="spine"></div>' +
+              '<div class="face"><span class="setname">One Piece TCG</span><span class="kind">'+p.sku+'</span></div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="p-body">' +
+            '<div class="p-set">ONE PIECE CARD GAME</div>' +
+            '<div class="p-name">'+p.sku+(p.note ? ' — '+p.note : '')+'</div>' +
+            '<div class="mode-toggle" role="tablist">' +
+              '<button data-mode="box" class="'+(mode==="box"?"active":"")+'">Box · '+money(p.box)+'</button>' +
+              '<button data-mode="case" class="'+(mode==="case"?"active":"")+'">Case · '+money(p.kase)+'</button>' +
+            '</div>' +
+            '<div class="p-price-row"><span class="p-price">'+money(total)+'</span>'+(qty>1 ? '<span class="p-price-each">'+money(price)+' × '+qty+' ('+mode+')</span>' : '<span class="p-price-each">per '+mode+'</span>')+'</div>' +
+            '<div class="qty-row">' +
+              '<div class="stepper"><button data-step="-1">−</button><span class="qv">'+qty+'</span><button data-step="1">+</button></div>' +
+              '<div class="p-actions">' +
+                '<button class="add-btn" data-add="1">Add to Cart</button>' +
+                '<a class="contact-btn" title="Ask on WhatsApp" target="_blank" rel="noopener" href="https://wa.me/16318029071?text='+encodeURIComponent("Hi! I'm interested in One Piece TCG "+p.sku+" ("+mode+").")+'"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3.5A11 11 0 003.7 17.4L2 22l4.7-1.6A11 11 0 1020.5 3.5z"/></svg></a>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>'
+      );
+    }).join("");
+
+    var faceEls = grid.querySelectorAll(".p-art .box-visual .face, .p-art .box-visual .spine");
+    // color applied via CSS .op-band rules already
+
+    Array.prototype.forEach.call(grid.querySelectorAll(".p-card"), function(card){
+      var key = card.getAttribute("data-key");
+      var product = items.filter(function(p){ return id("op",p.sku) === key; })[0];
+      if(!product) return;
+      Array.prototype.forEach.call(card.querySelectorAll("[data-mode]"), function(btn){
+        btn.addEventListener("click", function(){ opMode[product.sku] = btn.getAttribute("data-mode"); renderOP(); });
+      });
+      Array.prototype.forEach.call(card.querySelectorAll("[data-step]"), function(btn){
+        btn.addEventListener("click", function(){
+          var d = parseInt(btn.getAttribute("data-step"),10);
+          var cur = opQty[product.sku] || 1;
+          opQty[product.sku] = Math.max(1, cur + d);
+          renderOP();
+        });
+      });
+      card.querySelector("[data-add]").addEventListener("click", function(e){
+        var btn = e.currentTarget;
+        var mode = opMode[product.sku] || "box";
+        var qty = opQty[product.sku] || 1;
+        var price = mode === "box" ? product.box : product.kase;
+        var cartKey = "op-"+product.sku+"-"+mode;
+        var label = "One Piece TCG — " + product.sku;
+        if(!CART[cartKey]){ CART[cartKey] = {key:cartKey, label:label, meta:(mode==="box"?"Individual Box":"Full Case"), price:price, qty:0, cat:"One Piece"}; }
+        CART[cartKey].qty += qty;
+        saveCart(); updateCartUI();
+        flashAdded(btn);
+        showToast(label + " added to cart");
+      });
+    });
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll("#opFilter .tab-btn"), function(btn){
+    btn.addEventListener("click", function(){
+      Array.prototype.forEach.call(document.querySelectorAll("#opFilter .tab-btn"), function(b){ b.classList.remove("active"); });
+      btn.classList.add("active");
+      opActiveFilter = btn.getAttribute("data-f");
+      renderOP();
+    });
+  });
+
+  function flashAdded(btn){
+    var original = btn.textContent;
+    btn.textContent = "Added ✓";
+    btn.classList.add("added");
+    setTimeout(function(){ btn.textContent = original; btn.classList.remove("added"); }, 1100);
+  }
+
+  /* ---------------- Cart UI ---------------- */
+  function cartCount(){ var n=0; Object.keys(CART).forEach(function(k){ n += CART[k].qty; }); return n; }
+  function cartTotal(){ var t=0; Object.keys(CART).forEach(function(k){ t += CART[k].qty * CART[k].price; }); return t; }
+  var lastCartCount = 0;
+  function updateCartUI(){
+    var n = cartCount();
+    var badge = document.getElementById("cartCount");
+    if(n > 0){ badge.style.display = "flex"; badge.textContent = n; } else { badge.style.display = "none"; }
+    if(n !== lastCartCount && n > 0){
+      var cartBtn = document.getElementById("cartBtn");
+      badge.classList.remove("bump"); cartBtn.classList.remove("bump");
+      void badge.offsetWidth;
+      badge.classList.add("bump"); cartBtn.classList.add("bump");
+    }
+    lastCartCount = n;
+
+    var itemsEl = document.getElementById("drawerItems");
+    var footEl = document.getElementById("drawerFoot");
+    var keys = Object.keys(CART);
+    if(!keys.length){
+      itemsEl.innerHTML = '<div class="cart-empty">'+CART_GLYPH+'Your cart is empty.<br>Browse sealed Pokémon or One Piece products to get started.</div>';
+      footEl.innerHTML = '';
+      return;
+    }
+    itemsEl.innerHTML = keys.map(function(k){
+      var it = CART[k];
+      return (
+        '<div class="c-item" data-key="'+k+'">' +
+          '<div class="c-thumb">'+CART_GLYPH+'</div>' +
+          '<div class="c-info">' +
+            '<div class="nm">'+it.label+'</div>' +
+            '<div class="md">'+it.meta+' · '+money(it.price)+' each</div>' +
+            '<div class="bottom-row"><div class="stepper"><button data-c-step="-1">−</button><span class="qv">'+it.qty+'</span><button data-c-step="1">+</button></div><span class="c-price">'+money(it.price*it.qty)+'</span></div>' +
+            '<div style="margin-top:6px;"><a href="#" class="c-remove" data-remove="1">Remove</a></div>' +
+          '</div>' +
+        '</div>'
+      );
+    }).join("");
+
+    Array.prototype.forEach.call(itemsEl.querySelectorAll(".c-item"), function(row){
+      var k = row.getAttribute("data-key");
+      Array.prototype.forEach.call(row.querySelectorAll("[data-c-step]"), function(btn){
+        btn.addEventListener("click", function(){
+          var d = parseInt(btn.getAttribute("data-c-step"),10);
+          CART[k].qty = Math.max(1, CART[k].qty + d);
+          saveCart(); updateCartUI();
+        });
+      });
+      row.querySelector("[data-remove]").addEventListener("click", function(e){ e.preventDefault(); delete CART[k]; saveCart(); updateCartUI(); });
+    });
+
+    var subtotal = cartTotal();
+    var waText = "Hi! I'd like to order:%0A" + keys.map(function(k){ var it = CART[k]; return "• " + it.qty + "x " + it.label + " (" + it.meta + ") - " + money(it.price*it.qty); }).join("%0A") + "%0A%0ATotal: " + money(subtotal);
+    footEl.innerHTML =
+      '<div class="sum-row"><span>Subtotal</span><span>'+money(subtotal)+'</span></div>' +
+      '<div class="sum-row total"><span>Total</span><span class="v">'+money(subtotal)+'</span></div>' +
+      '<a class="btn btn-block" style="margin-top:14px;background:#25D366;color:#08260f;box-shadow:0 14px 30px -12px rgba(37,211,102,0.45);" target="_blank" rel="noopener" href="https://wa.me/16318029071?text='+waText+'">Checkout via WhatsApp</a>' +
+      '<div style="text-align:center;margin-top:10px;font-size:11.5px;color:var(--ink-faint);">We\'ll confirm availability &amp; shipping with you directly.</div>';
+  }
+
+  var toastTimer;
+  function showToast(msg){
+    var t = document.getElementById("toast");
+    document.getElementById("toastMsg").textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ t.classList.remove("show"); }, 2200);
+  }
+
+  function openDrawer(){ document.getElementById("drawer").classList.add("open"); document.getElementById("overlay").classList.add("open"); }
+  function closeDrawer(){ document.getElementById("drawer").classList.remove("open"); document.getElementById("overlay").classList.remove("open"); }
+  document.getElementById("cartBtn").addEventListener("click", openDrawer);
+  document.getElementById("footCartLink").addEventListener("click", function(e){ e.preventDefault(); openDrawer(); });
+  document.getElementById("drawerClose").addEventListener("click", closeDrawer);
+  document.getElementById("overlay").addEventListener("click", closeDrawer);
+
+  var mnav = document.getElementById("mnav");
+  document.getElementById("menuBtn").addEventListener("click", function(){ mnav.classList.toggle("open"); });
+  Array.prototype.forEach.call(mnav.querySelectorAll("a"), function(a){ a.addEventListener("click", function(){ mnav.classList.remove("open"); }); });
+
+  document.getElementById("searchPK").addEventListener("input", renderPK);
+  document.getElementById("searchOP").addEventListener("input", renderOP);
+  function syncTopSearch(val){
+    document.getElementById("searchPK").value = val;
+    document.getElementById("searchOP").value = val;
+    renderPK(); renderOP();
+  }
+  document.getElementById("searchTop").addEventListener("input", function(e){ syncTopSearch(e.target.value); });
+  document.getElementById("searchMobile").addEventListener("input", function(e){ syncTopSearch(e.target.value); });
+
+  document.getElementById("yr").textContent = new Date().getFullYear();
+  loadCart();
+  renderFeatured();
+  renderPK();
+  renderOP();
+  updateCartUI();
+
+  /* ---------------- Scroll reveal ---------------- */
+  if("IntersectionObserver" in window){
+    var revealObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add("in");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, {threshold:0.12, rootMargin:"0px 0px -40px 0px"});
+    Array.prototype.forEach.call(document.querySelectorAll(".reveal"), function(el){ revealObserver.observe(el); });
+  } else {
+    Array.prototype.forEach.call(document.querySelectorAll(".reveal"), function(el){ el.classList.add("in"); });
+  }
+
+  /* ---------------- Header scroll shadow ---------------- */
+  var headerEl = document.querySelector("header");
+  function onScroll(){
+    if(window.scrollY > 8){ headerEl.classList.add("scrolled"); }
+    else { headerEl.classList.remove("scrolled"); }
+  }
+  window.addEventListener("scroll", onScroll, {passive:true});
+  onScroll();
+})();
+</script>
+</body>
+</html>
